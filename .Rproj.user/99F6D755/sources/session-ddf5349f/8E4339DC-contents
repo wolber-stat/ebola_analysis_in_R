@@ -1,0 +1,139 @@
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(
+  tidyverse,
+  inspectdf,
+  plotly,
+  janitor,
+  visdat,
+  esquisse,
+  table1,
+  DataExplorer)
+#load data
+ebola_data <- read_csv("~/Desktop/stat/ebola_sierra_leone.csv")
+#View(ebola_sierra_leone)
+
+# exploring data -----
+head(ebola_data,n=10)
+tail(ebola_data) 
+ncol(ebola_data) # number of columns
+nrow(ebola_data) # number of rows
+dim(ebola_data) # number of rows and columns
+
+summary(ebola_data)
+#?summary
+#overall overview
+#visdat::vis_dat(ebola_data)
+vis_dat(ebola_data)
+
+#catagorical overview
+#show_summary <- inspect_cat(ebola_data)
+show_plot(inspect_cat(ebola_data))
+
+#numerical over view
+num_summary <- show_plot(inspect_num(ebola_data))
+ggplotly(num_summary)
+
+# analysing single variable: numeric -----
+ebola_data$age
+mean(ebola_data$age,na.rm = TRUE)
+median(ebola_data$age,na.rm = T)
+
+age_vec <- ebola_data$age
+sd(age_vec,na.rm = T)
+min(age_vec,na.rm = T)
+max(age_vec,na.rm = T)
+summary(age_vec)
+length(age_vec)
+sum(age_vec,na.rm = T)
+
+
+# visualizing single variable: numeric -----
+
+hist(age_vec)
+boxplot(age_vec)
+
+#ggplot
+#esquisse
+
+#esquisser(ebola_data)
+
+ggplot(ebola_data) +
+  aes(x = age) +
+  geom_histogram(bins = 30L, fill = "#112446") +
+  theme_minimal()
+
+
+
+
+
+
+# analysing single variable: catagorical -----
+
+table(ebola_data$district)
+tabyl(ebola_data$district)
+tabyl(ebola_data, district, sex)
+
+#visualizing single variables :catagorical
+barplot(table(ebola_data$district))
+
+#esquisser(table(ebola_data))
+
+
+# when was the first case reported
+min(ebola_data$date_of_sample)
+
+# what was the median age of the affected?
+median(ebola_data$age,na.rm = T)
+
+#had there been more cases in man or woman?
+tabyl(ebola_data, sex)
+#esquisser(ebola_data$sex)
+
+ggplot(ebola_data) +
+  aes(x = sex, colour = sex) +
+  geom_bar(fill = "#112446") +
+  scale_color_hue(direction = 1) +
+  theme_minimal()
+
+# what district had the most cases
+tabyl(ebola_data$district)
+
+
+esquisser(ebola_data$district)
+ggplot(ebola_data) +
+  aes(x = district, fill = district, colour = district) +
+  geom_bar() +
+  scale_fill_hue(direction = 1) +
+  theme_minimal()
+# by the end of june 2014 , was the outbreak growing or recending?
+
+#esquisser(ebola_data)
+ggplot(ebola_data) +
+  aes(x = date_of_onset) +
+  geom_histogram(bins = 30L, fill = "#112446") +
+  theme_minimal()
+
+#
+#bit.ly/yauonde-covid-data
+#go.nature.com/3R866wx
+#https://docs.google.com/spreadsheets/d/17Ex6wcvHN5v5WBDGDiKkCsc2SOcur9OO/edit?gid=784403091#gid=784403091
+
+# why not excel?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
